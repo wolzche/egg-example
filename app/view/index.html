@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇</title>
+    <style type="text/css">
+        canvas{
+            border: 1px solid black;
+        }
+    </style>
+    <script type="text/javascript" src="/public/js/Snake.js" ></script>
+    <script type="text/javascript" src="/public/js/Stage.js" ></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        var game;
+        function load(){
+            var stage=new Stage();
+            //获取用于绘制canvas的Context对象
+            var canvas=document.getElementById("mCanvas");
+            var ctx=canvas.getContext("2d");
+            //绘制初始界面
+            stage.print(ctx);
+            game=window.setInterval(function(){
+                stage.snake.step();
+                stage.print(ctx);
+                if(GAMEOVER){
+                    ctx.fillStyle="red";
+                    ctx.font="50px 微软雅黑";
+                    ctx.fillText("GAMEOVER!",100,250);
+                    window.clearInterval(game);
+                }
+            },TIME);
+        }
+        /**
+         * 方向键控制贪吃蛇的方向
+         * @param {Object} dir
+         */
+        function changeDir(dir){
+            switch (dir){
+                case UP:
+                    if(DIR!=DOWN){
+                        DIR=dir;
+                    }
+                    break;
+                case DOWN:
+                    if(DIR!=UP){
+                        DIR=dir;
+                    }
+                    break;
+                case LEFT:
+                    if(DIR!=RIGHT){
+                        DIR=dir;
+                    }
+                    break;
+                case RIGHT:
+                    if(DIR!=LEFT){
+                        DIR=dir;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $(document).keydown(function(event){
+            if(event.keyCode == 37) changeDir(LEFT);
+            if(event.keyCode == 38) changeDir(UP);
+            if(event.keyCode == 39) changeDir(RIGHT);
+            if(event.keyCode == 40) changeDir(DOWN);
+        });
+    </script>
+</head>
+<body onload="load()">
+<div style="margin-top: 10%;margin-left: 35%">
+    <canvas id="mCanvas" width="500" height="500"></canvas>
+    <!--控制方向-->
+    <table cellpadding="0px" cellspacing="0px">
+        <tr>
+            <td></td>
+            <td><input type="button" value="上" onclick="changeDir(UP)"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><input type="button" value="左" onclick="changeDir(LEFT)"></td>
+            <td></td>
+            <td><input type="button" value="右" onclick="changeDir(RIGHT)"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" value="下" onclick="changeDir(DOWN)"/></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
